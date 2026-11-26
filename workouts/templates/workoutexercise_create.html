@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid px-0">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Adicionar Exercício</h2>
+            <p class="text-muted mb-0">
+                Configure os detalhes do exercício na ficha de treino.
+            </p>
+        </div>
+
+        <a href="{% url 'workoutplans_detail' workout_plan_id %}"
+           class="btn btn-outline-light">
+            <i class="bi bi-arrow-left me-1"></i> Voltar à ficha
+        </a>
+    </div>
+
+    <div class="card workout-card border-0">
+        <div class="card-body p-4">
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="mb-4">
+                    <label for="{{ form.exercise.id_for_label }}" class="form-label">
+                        Exercício
+                    </label>
+                    {{ form.exercise }}
+                    {% for error in form.exercise.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <label for="{{ form.order.id_for_label }}" class="form-label">
+                            Ordem
+                        </label>
+                        {{ form.order }}
+                        {% for error in form.order.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <label for="{{ form.sets.id_for_label }}" class="form-label">
+                            Séries
+                        </label>
+                        {{ form.sets }}
+                        {% for error in form.sets.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <label for="{{ form.repetitions.id_for_label }}" class="form-label">
+                            Repetições
+                        </label>
+                        {{ form.repetitions }}
+                        {% for error in form.repetitions.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label for="{{ form.weight_kg.id_for_label }}" class="form-label">
+                            Carga (kg)
+                        </label>
+                        {{ form.weight_kg }}
+                        {% for error in form.weight_kg.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label for="{{ form.rest_seconds.id_for_label }}" class="form-label">
+                            Descanso (segundos)
+                        </label>
+                        {{ form.rest_seconds }}
+                        {% for error in form.rest_seconds.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.notes.id_for_label }}" class="form-label">
+                        Observações
+                    </label>
+                    {{ form.notes }}
+                    {% for error in form.notes.errors %}
+                        <div class="text-danger small mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a href="{% url 'workoutplans_detail' workout_plan_id %}"
+                       class="btn btn-outline-light">
+                        Cancelar
+                    </a>
+
+                    <button type="submit" class="btn btn-purple">
+                        <i class="bi bi-plus-lg me-1"></i> Adicionar exercício
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .workout-card {
+        background: var(--card-bg);
+        color: var(--text-primary);
+        border-radius: 16px;
+    }
+
+    .workout-card .form-control,
+    .workout-card .form-select {
+        background-color: var(--input-bg);
+        color: var(--text-primary);
+        border: 1px solid var(--input-border);
+        border-radius: 8px;
+        padding: 11px 12px;
+    }
+
+    .workout-card textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .workout-card .form-control:focus,
+    .workout-card .form-select:focus {
+        border-color: var(--primary-purple);
+        box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.2);
+    }
+
+    .workout-card .form-select option {
+        background: var(--input-bg);
+        color: var(--text-primary);
+    }
+
+    .btn-purple {
+        background-color: var(--primary-purple);
+        color: #fff;
+        border: 1px solid var(--primary-purple);
+    }
+
+    .btn-purple:hover {
+        background-color: #59339d;
+        color: #fff;
+    }
+</style>
+{% endblock %}

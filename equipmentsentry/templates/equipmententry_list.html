@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Entradas de Equipamentos | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1 text-light">
+                <i class="bi bi-box-arrow-in-right" style="color: #C4B5FD;"></i>
+                Entradas de Equipamentos
+            </h3>
+            <p class="text-light mb-0">
+                Gerencie e consulte o histórico de entradas de equipamentos da academia.
+            </p>
+        </div>
+    </div>
+
+    <!-- Pesquisa e cadastro -->
+    <div class="card bg-dark border-secondary shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+
+                <form method="GET" class="d-flex flex-wrap align-items-center gap-2 flex-grow-1">
+
+                    <div class="input-group flex-grow-1" style="max-width: 500px; min-width: 250px;">
+                        <span class="input-group-text"
+                              style="background-color: #30283A; border: 1px solid #8B5CF6; color: #C4B5FD;">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control"
+                            placeholder="Buscar por equipamento ou fornecedor..."
+                            value="{{ request.GET.search|default:'' }}"
+                            style="background-color: #30283A; border: 1px solid #8B5CF6; color: white;"
+                        >
+                    </div>
+
+                    <button type="submit"
+                            class="btn"
+                            style="background-color: #30283A; border: 1px solid #8B5CF6; color: #C4B5FD;">
+                        <i class="fa-solid fa-search me-1"></i>
+                        Buscar
+                    </button>
+
+                    {% if request.GET.search %}
+                        <a href="{% url 'equipmentsentry_list' %}"
+                           class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-xmark me-1"></i>
+                            Limpar
+                        </a>
+                    {% endif %}
+
+                </form>
+
+                {% if perms.equipmentsentry.add_equipmententry %}
+                    <a href="{% url 'equipmentsentry_create' %}" class="btn btn-purple">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Nova entrada
+                    </a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela -->
+    <div class="card bg-dark border-secondary shadow-sm">
+
+        <div class="card-header border-secondary py-3">
+            <h5 class="mb-0 text-light fw-semibold">
+                <i class="fa-solid fa-list me-2" style="color: #C4B5FD;"></i>
+                Histórico de entradas
+            </h5>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+
+                <table class="table table-dark table-hover align-middle mb-0">
+
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Data da compra</th>
+                            <th>Equipamento</th>
+                            <th>Fornecedor</th>
+                            <th>Quantidade</th>
+                            <th>Valor total</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for entry in entries %}
+
+                            <tr>
+                                <td class="ps-4">
+                                    <span class="text-light">
+                                        {{ entry.purchase_date|date:"d/m/Y" }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="fw-semibold text-light">
+                                        {{ entry.equipment.title }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-light">
+                                        {{ entry.supplier.name }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        {{ entry.quantity }} un.
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="fw-semibold text-success">
+                                        R$ {{ entry.total_value|floatformat:2 }}
+                                    </span>
+                                </td>
+
+                                <td class="text-center">
+                                    {% if perms.equipmentsentry.view_equipmententry %}
+                                        <a href="{% url 'equipmentsentry_detail' entry.pk %}"
+                                        class="btn btn-sm btn-outline-info"
+                                        title="Visualizar detalhes">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <i class="fa-solid fa-box-open fa-2x mb-3"
+                                       style="color: #C4B5FD;"></i>
+
+                                    <h6 class="text-light fw-semibold">
+                                        Nenhuma entrada encontrada
+                                    </h6>
+
+                                    <p class="text-secondary mb-0">
+                                        {% if request.GET.search %}
+                                            Não encontramos entradas com esse termo de pesquisa.
+                                        {% else %}
+                                            Ainda não existem entradas de equipamentos cadastradas.
+                                        {% endif %}
+                                    </p>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+        {% if is_paginated %}
+            <div class="card-footer border-secondary">
+                {% include "components/_pagination.html" %}
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

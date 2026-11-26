@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Nova Entrada | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+        <h3 class="fw-bold mb-1 text-light">
+            <i class="fa-solid fa-circle-plus me-2" style="color: #C4B5FD;"></i>
+            Nova Entrada de Equipamentos
+        </h3>
+
+        <p class="text-light mb-0">
+            Registre a aquisição ou o recebimento de equipamentos para a academia.
+        </p>
+    </div>
+
+    <!-- Formulário -->
+    <div class="card bg-dark border-secondary shadow-sm">
+
+        <div class="card-header border-secondary py-3">
+            <h5 class="mb-0 text-light fw-semibold">
+                <i class="fa-solid fa-file-circle-plus me-2"
+                   style="color: #C4B5FD;"></i>
+                Informações da entrada
+            </h5>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="row g-4">
+
+                    <!-- Data da compra -->
+                    <div class="col-md-6">
+                        <label for="{{ form.purchase_date.id_for_label }}"
+                               class="form-label text-light fw-semibold">
+                            {{ form.purchase_date.label }}
+                        </label>
+
+                        {{ form.purchase_date }}
+
+                        {% for error in form.purchase_date.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Equipamento -->
+                    <div class="col-md-6">
+                        <label for="{{ form.equipment.id_for_label }}"
+                               class="form-label text-light fw-semibold">
+                            {{ form.equipment.label }}
+                        </label>
+
+                        {{ form.equipment }}
+
+                        {% for error in form.equipment.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Fornecedor -->
+                    <div class="col-md-6">
+                        <label for="{{ form.supplier.id_for_label }}"
+                               class="form-label text-light fw-semibold">
+                            {{ form.supplier.label }}
+                        </label>
+
+                        {{ form.supplier }}
+
+                        {% for error in form.supplier.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Quantidade -->
+                    <div class="col-md-6">
+                        <label for="{{ form.quantity.id_for_label }}"
+                               class="form-label text-light fw-semibold">
+                            {{ form.quantity.label }}
+                        </label>
+
+                        {{ form.quantity }}
+
+                        {% for error in form.quantity.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Valor total -->
+                    <div class="col-md-6">
+                        <label for="{{ form.total_value.id_for_label }}"
+                               class="form-label text-light fw-semibold">
+                            {{ form.total_value.label }}
+                        </label>
+
+                        <div class="input-group">
+                            <span class="input-group-text"
+                                  style="background-color: #30283A; border-color: #8B5CF6; color: #C4B5FD;">
+                                R$
+                            </span>
+
+                            {{ form.total_value }}
+                        </div>
+
+                        {% for error in form.total_value.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <hr class="border-secondary my-4">
+
+                <!-- Botões -->
+                <div class="d-flex flex-wrap justify-content-end gap-2">
+
+                    <a href="{% url 'equipmentsentry_list' %}"
+                       class="btn btn-outline-secondary">
+                        <i class="fa-solid fa-arrow-left me-1"></i>
+                        Voltar
+                    </a>
+
+                    <button type="submit" class="btn btn-purple">
+                        <i class="fa-solid fa-check me-1"></i>
+                        Registrar entrada
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

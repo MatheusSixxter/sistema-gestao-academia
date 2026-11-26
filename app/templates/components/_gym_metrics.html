@@ -1,0 +1,107 @@
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3">
+
+    <!-- TOTAL DE TREINOS -->
+    <div class="col">
+        <div class="card metric-card">
+            <div class="card-body">
+
+                <div class="metric-card-top">
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                    </div>
+
+                    <span class="metric-category">Treinamento</span>
+                </div>
+
+                <p class="metric-label">Total de treinos</p>
+
+                <h3 class="metric-value">
+                    {{ gym_metrics.total_workouts|default:0 }}
+                </h3>
+
+            </div>
+
+            <div class="metric-accent"></div>
+        </div>
+    </div>
+
+
+    <!-- TOTAL DE FORNECEDORES -->
+    <div class="col">
+        <div class="card metric-card">
+            <div class="card-body">
+
+                <div class="metric-card-top">
+                    <div class="metric-icon metric-icon-blue">
+                        <i class="fa-solid fa-truck"></i>
+                    </div>
+
+                    <span class="metric-category">Parceiros</span>
+                </div>
+
+                <p class="metric-label">Total de fornecedores</p>
+
+                <h3 class="metric-value">
+                    {{ gym_metrics.total_suppliers|default:0 }}
+                </h3>
+
+            </div>
+
+            <div class="metric-accent metric-accent-blue"></div>
+        </div>
+    </div>
+
+
+    <!-- TOTAL DE EXERCÍCIOS -->
+    <div class="col">
+        <div class="card metric-card">
+            <div class="card-body">
+
+                <div class="metric-card-top">
+                    <div class="metric-icon metric-icon-pink">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+
+                    <span class="metric-category">Atividades</span>
+                </div>
+
+                <p class="metric-label">Total de exercícios</p>
+
+                <h3 class="metric-value">
+                    {{ gym_metrics.total_exercises|default:0 }}
+                </h3>
+
+            </div>
+
+            <div class="metric-accent metric-accent-pink"></div>
+        </div>
+    </div>
+
+
+    <!-- UNIDADES DE EQUIPAMENTOS -->
+    <div class="col">
+        <div class="card metric-card">
+            <div class="card-body">
+
+                <div class="metric-card-top">
+                    <div class="metric-icon metric-icon-green">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+
+                    <span class="metric-category">Estrutura</span>
+                </div>
+
+                <p class="metric-label">Unidades de equipamentos</p>
+
+                <h3 class="metric-value">
+                    {{ gym_metrics.total_equipments|default:0 }}
+                </h3>
+
+            </div>
+
+            <div class="metric-accent metric-accent-green"></div>
+        </div>
+    </div>
+
+</div>

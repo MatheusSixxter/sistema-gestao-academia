@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Marca | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+        <div>
+            <h2 class="text-white fw-bold mb-1">
+                <i class="fa-solid fa-pen-to-square me-2" style="color: #A78BFA;"></i>
+                Editar Marca
+            </h2>
+
+            <p class="text-white mb-0">
+                Atualize as informações da marca cadastrada.
+            </p>
+        </div>
+
+        <a href="{% url 'brands_detail' brand.pk %}" class="btn btn-outline-light">
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Voltar aos detalhes
+        </a>
+
+    </div>
+
+
+    <!-- Card do formulário -->
+    <div class="row justify-content-center">
+
+        <div class="col-12 col-xl-9 col-xxl-8">
+
+            <div class="card bg-dark border-secondary shadow-sm"
+                 style="background-color: #30283A !important; border-color: #493568 !important;">
+
+                <!-- Cabeçalho do card -->
+                <div class="card-header border-secondary py-3"
+                     style="background-color: #211A2B;">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="rounded-3 d-flex align-items-center justify-content-center"
+                             style="width: 45px; height: 45px; background-color: #493568;">
+
+                            <i class="fa-solid fa-tag"
+                               style="color: #C4B5FD;"></i>
+
+                        </div>
+
+                        <div>
+                            <h5 class="text-white fw-semibold mb-0">
+                                Informações da marca
+                            </h5>
+
+                            <small class="text-secondary">
+                                Modifique os campos abaixo para atualizar o cadastro.
+                            </small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Formulário -->
+                <div class="card-body p-4">
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <!-- Erros gerais -->
+                        {% if form.non_field_errors %}
+
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- Nome -->
+                        <div class="mb-4">
+
+                            <label for="{{ form.name.id_for_label }}"
+                                   class="form-label text-white fw-semibold">
+
+                                <i class="fa-solid fa-tag me-2"
+                                   style="color: #A78BFA;"></i>
+
+                                Nome da marca
+
+                            </label>
+
+                            {{ form.name }}
+
+                            {% for error in form.name.errors %}
+                                <div class="text-danger small mt-2">
+                                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- Descrição -->
+                        <div class="mb-4">
+
+                            <label for="{{ form.description.id_for_label }}"
+                                   class="form-label text-white fw-semibold">
+
+                                <i class="fa-solid fa-align-left me-2"
+                                   style="color: #A78BFA;"></i>
+
+                                Descrição
+
+                            </label>
+
+                            {{ form.description }}
+
+                            {% for error in form.description.errors %}
+                                <div class="text-danger small mt-2">
+                                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                            <small class="text-secondary d-block mt-2">
+                                Informe detalhes ou características relevantes sobre esta marca.
+                            </small>
+
+                        </div>
+
+
+                        <hr class="border-secondary opacity-50 my-4">
+
+
+                        <!-- Botões -->
+                        <div class="d-flex flex-wrap justify-content-end gap-2">
+
+                            <a href="{% url 'brands_detail' brand.pk %}"
+                               class="btn btn-outline-secondary">
+
+                                <i class="fa-solid fa-xmark me-2"></i>
+                                Cancelar
+
+                            </a>
+
+                            <button type="submit" class="btn btn-purple">
+
+                                <i class="fa-solid fa-floppy-disk me-2"></i>
+                                Salvar alterações
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

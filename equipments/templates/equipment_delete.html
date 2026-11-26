@@ -1,0 +1,171 @@
+
+{% extends "base.html" %}
+
+{% block title %}Excluir equipamento | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+
+        <h2 class="text-white fw-bold mb-1">
+            <i class="fa-solid fa-trash-can me-2 text-danger"></i>
+            Excluir equipamento
+        </h2>
+
+        <p class="text-white mb-0">
+            Confirme a exclusão do equipamento selecionado.
+        </p>
+
+    </div>
+
+
+    <!-- Card de confirmação -->
+    <div class="card shadow-sm mx-auto"
+         style="max-width: 650px; background-color: #30283A; border: 1px solid #493568;">
+
+        <div class="card-body p-4 p-md-5">
+
+            <!-- Ícone -->
+            <div class="text-center mb-4">
+
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center"
+                     style="width: 85px; height: 85px; background-color: rgba(220, 53, 69, 0.15);">
+
+                    <i class="fa-solid fa-triangle-exclamation fa-2x text-danger"></i>
+
+                </div>
+
+            </div>
+
+
+            <!-- Mensagem -->
+            <div class="text-center mb-4">
+
+                <h4 class="text-white fw-bold mb-2">
+                    Tem certeza que deseja excluir?
+                </h4>
+
+                <p class="text-white-50 mb-0">
+                    Esta ação não poderá ser desfeita.
+                </p>
+
+            </div>
+
+
+            <!-- Equipamento selecionado -->
+            <div class="rounded p-3 mb-4"
+                 style="background-color: #211A2B; border: 1px solid #493568;">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 48px; height: 48px; background-color: #493568;">
+
+                        <i class="fa-solid fa-dumbbell"
+                           style="color: #C4B5FD;"></i>
+
+                    </div>
+
+                    <div class="overflow-hidden">
+
+                        <h6 class="text-white fw-bold mb-1">
+                            {{ equipment.title }}
+                        </h6>
+
+                        <small class="text-white-50">
+                            {{ equipment.brand.name|default:"Marca não informada" }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <hr style="border-color: #493568;">
+
+                <div class="row g-2">
+
+                    <div class="col-6">
+
+                        <small class="text-white-50 d-block">Categoria</small>
+
+                        <span class="text-white">
+                            {{ equipment.get_category_display }}
+                        </span>
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <small class="text-white-50 d-block">Quantidade</small>
+
+                        <span class="text-white">
+                            {{ equipment.quantity }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Aviso de relacionamento -->
+            <div class="alert alert-warning small mb-4">
+
+                <i class="fa-solid fa-circle-exclamation me-1"></i>
+
+                <strong>Atenção:</strong>
+                este equipamento pode estar vinculado a exercícios cadastrados.
+                Como o relacionamento utiliza
+                <code>on_delete=PROTECT</code>, o Django impedirá a exclusão
+                enquanto existirem exercícios vinculados.
+
+            </div>
+
+
+            <!-- Formulário -->
+            <form method="POST">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+
+                    <a href="{% url 'equipments_detail' equipment.pk %}"
+                       class="btn btn-outline-secondary">
+
+                        <i class="fa-solid fa-arrow-left me-1"></i>
+                        Cancelar
+
+                    </a>
+
+                    <button type="submit" class="btn btn-danger">
+
+                        <i class="fa-solid fa-trash me-1"></i>
+                        Confirmar exclusão
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

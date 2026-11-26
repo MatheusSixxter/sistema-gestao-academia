@@ -1,0 +1,148 @@
+<aside class="sidebar">
+
+    <div class="sidebar-inner">
+
+        <!-- Botão do menu para dispositivos móveis -->
+        <button class="btn btn-outline-light d-sm-none mb-3"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#menuCollapse"
+                aria-expanded="false"
+                aria-controls="menuCollapse">
+            <i class="bi bi-list fs-5"></i>
+            Menu
+        </button>
+
+        <!-- Navegação -->
+        <div class="collapse d-sm-block" id="menuCollapse">
+
+            <ul class="nav flex-column" id="menu">
+
+                <li class="nav-item">
+                    <a href="{% url 'dashboards' %}" class="nav-link px-3 align-middle">
+                        <i class="bi bi-house-door fs-4"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'athletes_list' %}"
+                       class="nav-link px-3 align-middle">
+                        <i class="bi bi-people fs-4"></i>
+                        <span>Alunos</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'workoutplans_list' %}"
+                       class="nav-link px-3 align-middle">
+                        <i class="bi bi-clipboard-check fs-4"></i>
+                        <span>Ficha de Treino</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'exercises_list' %}" class="nav-link px-3 align-middle">
+                        <i class="fa-solid fa-list-check fs-4"></i>
+                        <span>Exercícios</span>
+                    </a>
+                </li>
+
+                <!-- Separador -->
+                <li class="nav-item">
+                    <hr class="sidebar-divider">
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'equipments_list' %}" class="nav-link px-3 align-middle">
+                        <i class="fa-solid fa-dumbbell fs-4"></i>
+                        <span>Equipamentos</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'brands_list' %}" class="nav-link px-3 align-middle">
+                        <i class="fa-solid fa-tags fs-4"></i>
+                        <span>Marca de Equipamentos</span>
+                    </a>
+                </li>
+
+
+
+                <li class="nav-item">
+                    <a href="{% url 'equipmentsentry_list' %}" class="nav-link px-2 align-middle">
+                        <i class="bi bi-box-arrow-in-right fs-4"></i>
+                        <span>Entrada de Equipamentos</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'suppliers_list' %}" class="nav-link px-3 align-middle">
+                        <i class="bi bi-truck fs-4"></i>
+                        <span>Fornecedores</span>
+                    </a>
+                </li>
+
+
+                <!-- Separador -->
+                <li class="nav-item">
+                    <hr class="sidebar-divider">
+                </li>
+
+
+
+{% if user.is_authenticated %}
+
+    <!-- Usuário logado -->
+    <li class="mb-2">
+        <div class="nav-link px-3 align-middle">
+            <i class="bi bi-person-circle fs-4"></i>
+            <span class="ms-1">
+                Olá, {{ user.get_full_name|default:user.username }}!
+            </span>
+        </div>
+    </li>
+
+    <!-- Logout -->
+    <li class="nav-item">
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="nav-link px-3 align-middle border-0 bg-transparent">
+                <i class="bi bi-box-arrow-right fs-4"></i>
+                <span class="ms-1">Sair</span>
+            </button>
+        </form>
+    </li>
+
+{% endif %}
+
+
+            
+
+
+                <li class="nav-item mt-3 pt-3 border-top"
+                    style="border-color: #493568 !important;">
+                    <div class="text-center">
+                        <small style="color: #91869f;">
+                            © 2026 <strong style="color: #C4B5FD;">Math's GYM</strong>
+                            <br>
+                            All rights reserved.
+                        </small>
+                    </div>
+                </li>
+
+
+
+
+
+                
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</aside>

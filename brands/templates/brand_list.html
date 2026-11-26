@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Marcas | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1 text-light">
+                <i class="fa-solid fa-tags me-2" style="color: #C4B5FD;"></i>
+                Marcas
+            </h3>
+
+            <p class="text-light mb-0">
+                Gerencie todas as marcas dos equipamentos da sua academia.
+            </p>
+        </div>
+    </div>
+
+    <!-- Card principal -->
+    <div class="card bg-dark border-secondary shadow-sm"
+         style="background-color: #30283A !important; border-color: #493568 !important;">
+
+        <div class="card-body p-3">
+
+            <!-- Busca e cadastro -->
+            <form method="GET"
+                  action="{% url 'brands_list' %}"
+                  class="d-flex flex-wrap align-items-center gap-2 mb-4">
+
+                <div class="input-group" style="width: 100%; max-width: 460px;">
+
+                    <span class="input-group-text"
+                          style="background-color: #30283A;
+                                 border: 1px solid #8B5CF6;
+                                 color: #C4B5FD;">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control text-light"
+                        style="background-color: #30283A;
+                               border: 1px solid #8B5CF6;"
+                        placeholder="Buscar por nome da marca..."
+                        value="{{ request.GET.search|default:'' }}"
+                    >
+
+                </div>
+
+                <button type="submit"
+                        class="btn"
+                        style="background-color: #30283A;
+                               border: 1px solid #8B5CF6;
+                               color: #C4B5FD;">
+
+                    <i class="fa-solid fa-magnifying-glass me-1"></i>
+                    Buscar
+                </button>
+
+                {% if request.GET.search %}
+                    <a href="{% url 'brands_list' %}" class="btn btn-outline-secondary">
+                        <i class="fa-solid fa-xmark me-1"></i>
+                        Limpar
+                    </a>
+                {% endif %}
+
+                {% if perms.brands.add_brand %}
+                    <a href="{% url 'brands_create' %}" class="btn btn-purple">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Nova marca
+                    </a>
+                {% endif %}
+
+            </form>
+
+            <!-- Tabela -->
+            <div class="table-responsive">
+
+                <table class="table table-dark table-hover align-middle mb-0"
+                       style="table-layout: fixed; width: 100%;">
+
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 60%;">
+                        <col style="width: 15%;">
+                    </colgroup>
+
+                    <thead>
+                        <tr class="text-secondary small">
+                            <th class="ps-2">Marca</th>
+                            <th>Descrição</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for brand in brands %}
+
+                            <tr>
+
+                                <!-- Marca -->
+                                <td class="ps-2">
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                             style="width: 38px;
+                                                    height: 38px;
+                                                    background-color: #493568;">
+
+                                            <i class="fa-solid fa-tag"
+                                               style="color: #C4B5FD;"></i>
+
+                                        </div>
+
+                                        <span class="text-white fw-semibold">
+                                            {{ brand.name }}
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+                                <!-- Descrição -->
+                                <td class="text-white"
+                                    style="white-space: normal; overflow-wrap: anywhere;">
+
+                                    {% if brand.description %}
+                                        {{ brand.description }}
+                                    {% else %}
+                                        <span class="text-secondary">
+                                            Não informado
+                                        </span>
+                                    {% endif %}
+
+                                </td>
+
+                                <!-- Ações -->
+                                <td class="text-center" style="white-space: nowrap;">
+
+                                    <div class="d-flex justify-content-center gap-2">
+
+
+                                        {% if perms.brands.view_brand %}
+                                            <a href="{% url 'brands_detail' brand.pk %}"
+                                            class="btn btn-sm btn-outline-info"
+                                            title="Visualizar"
+                                            aria-label="Visualizar marca">
+
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                        {% endif %}
+
+                                        {% if perms.brands.change_brand %}
+                                            <a href="{% url 'brands_update' brand.pk %}"
+                                            class="btn btn-sm btn-outline-warning"
+                                            title="Editar"
+                                            aria-label="Editar marca">
+
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </a>
+                                        {% endif %}
+
+                                        {% if perms.brands.delete_brand %}
+                                            <a href="{% url 'brands_delete' brand.pk %}"
+                                            class="btn btn-sm btn-outline-danger"
+                                            title="Excluir"
+                                            aria-label="Excluir marca">
+
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        {% endif %}
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td colspan="3" class="text-center py-5">
+
+                                    <i class="fa-solid fa-tags fa-2x text-secondary mb-3"></i>
+
+                                    <h6 class="text-white fw-semibold">
+                                        Nenhuma marca encontrada
+                                    </h6>
+
+                                    <p class="text-secondary mb-3">
+
+                                        {% if request.GET.search %}
+                                            Não encontramos marcas com esse nome.
+                                        {% else %}
+                                            Ainda não existem marcas cadastradas.
+                                        {% endif %}
+
+                                    </p>
+
+                                    {% if not request.GET.search %}
+
+                                        {% if perms.brands.add_brand %}
+                                            <a href="{% url 'brands_create' %}"
+                                            class="btn btn-purple btn-sm">
+
+                                                <i class="fa-solid fa-plus me-1"></i>
+                                                Cadastrar primeira marca
+
+                                            </a>
+                                        {% endif %}
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Paginação -->
+            {% include "components/_pagination.html" %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

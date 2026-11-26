@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}{{ supplier.name }} | Fornecedores{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+
+        <div>
+
+            <h2 class="text-white fw-bold mb-1">
+                <i class="fa-solid fa-truck-fast me-2" style="color: #A78BFA;"></i>
+                Detalhes do fornecedor
+            </h2>
+
+            <p class="text-light mb-0">
+                Consulte as informações cadastradas do fornecedor.
+            </p>
+
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+
+            <a href="{% url 'suppliers_update' supplier.pk %}" class="btn btn-outline-warning">
+                <i class="fa-solid fa-pen me-1"></i>
+                Editar
+            </a>
+
+            <a href="{% url 'suppliers_delete' supplier.pk %}" class="btn btn-outline-danger">
+                <i class="fa-solid fa-trash me-1"></i>
+                Excluir
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- Card de detalhes -->
+    <div class="card border-0 shadow-sm" style="background-color: #30283A;">
+
+        <div class="card-body p-4">
+
+            <!-- Identificação -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+
+                <div class="rounded-circle d-flex align-items-center justify-content-center"
+                     style="width: 58px; height: 58px; background-color: #493568; flex-shrink: 0;">
+
+                    <i class="fa-solid fa-truck-fast fa-xl" style="color: #C4B5FD;"></i>
+
+                </div>
+
+                <div>
+                    <h4 class="text-white fw-bold mb-1">
+                        {{ supplier.name }}
+                    </h4>
+
+                    <span class="text-secondary">
+                        Informações cadastrais
+                    </span>
+                </div>
+
+            </div>
+
+            <hr style="border-color: #493568; opacity: 1;">
+
+            <!-- Informações -->
+            <div class="row g-4 mt-1">
+
+                <!-- CNPJ -->
+                <div class="col-12 col-md-6">
+
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="fa-solid fa-id-card" style="color: #A78BFA;"></i>
+                        <span class="text-secondary">CNPJ</span>
+                    </div>
+
+                    <p class="text-white fw-semibold mb-0">
+                        {{ supplier.cnpj }}
+                    </p>
+
+                </div>
+
+                <!-- Telefone -->
+                <div class="col-12 col-md-6">
+
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="fa-solid fa-phone" style="color: #A78BFA;"></i>
+                        <span class="text-secondary">Telefone</span>
+                    </div>
+
+                    <p class="text-white fw-semibold mb-0">
+                        {{ supplier.phone }}
+                    </p>
+
+                </div>
+
+                <!-- E-mail -->
+                <div class="col-12">
+
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="fa-solid fa-envelope" style="color: #A78BFA;"></i>
+                        <span class="text-secondary">E-mail</span>
+                    </div>
+
+                    <p class="text-white fw-semibold mb-0 text-break">
+                        {{ supplier.email }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr style="border-color: #493568; opacity: 1;" class="mt-4">
+
+            <!-- Rodapé -->
+            <div class="d-flex justify-content-start">
+
+                <a href="{% url 'suppliers_list' %}" class="btn btn-outline-secondary">
+                    <i class="fa-solid fa-arrow-left me-1"></i>
+                    Voltar para fornecedores
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

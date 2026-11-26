@@ -1,0 +1,429 @@
+
+{% extends "base.html" %}
+
+{% block title %}Equipamentos | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+   <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1 text-light">
+                <i class="fa-solid fa-dumbbell me-2" style="color: #C4B5FD;"></i>
+                Equipamentos
+            </h3>
+
+            <p class="text-light mb-0">
+                Gerencie os equipamentos e acompanhe as condições dos itens da sua academia.
+            </p>
+        </div>
+    </div>
+
+
+
+    <!-- Card principal -->
+    <div class="card shadow-sm"
+         style="background-color: #30283A; border: 1px solid #493568;">
+
+        <div class="card-body p-3">
+
+            <!-- Pesquisa e cadastro -->
+            <form method="GET" class="mb-4">
+
+                <!-- Primeira linha: pesquisa e novo equipamento -->
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+
+                    <div class="input-group" style="max-width: 390px;">
+
+                        <span class="input-group-text text-white"
+                              style="background-color: #30283A; border: 1px solid #8B5CF6;">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+
+                        <input
+                            type="text"
+                            name="title"
+                            class="form-control text-white"
+                            style="background-color: #30283A; border: 1px solid #8B5CF6;"
+                            placeholder="Buscar equipamento..."
+                            value="{{ request.GET.title|default:'' }}"
+                        >
+
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-light"
+                            style="border-color: #8B5CF6;">
+
+                        <i class="fa-solid fa-magnifying-glass me-1"></i>
+                        Buscar
+
+                    </button>
+
+                    {% if perms.equipments.add_equipment %}
+                        <a href="{% url 'equipments_create' %}"
+                        class="btn btn-purple ms-auto">
+
+                            <i class="fa-solid fa-plus me-1"></i>
+                            Novo equipamento
+
+                        </a>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Segunda linha: filtros -->
+                <div class="d-flex flex-wrap align-items-center gap-2">
+
+                    <!-- Categoria -->
+                    <select
+                        name="category"
+                        class="form-select text-white"
+                        style="background-color: #30283A; border: 1px solid #8B5CF6; max-width: 190px;"
+                    >
+
+                        <option value="">Todas as categorias</option>
+
+                        {% for value, label in categories %}
+
+                            <option value="{{ value }}"
+                                {% if request.GET.category == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <!-- Marca -->
+                    <select
+                        name="brand"
+                        class="form-select text-white"
+                        style="background-color: #30283A; border: 1px solid #8B5CF6; max-width: 190px;"
+                    >
+
+                        <option value="">Todas as marcas</option>
+
+                        {% for brand in brands %}
+
+                            <option value="{{ brand.pk }}"
+                                {% if request.GET.brand == brand.pk|stringformat:"s" %}selected{% endif %}>
+                                {{ brand.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <!-- Condição -->
+                    <select
+                        name="condition"
+                        class="form-select text-white"
+                        style="background-color: #30283A; border: 1px solid #8B5CF6; max-width: 190px;"
+                    >
+
+                        <option value="">Todas as condições</option>
+
+                        {% for value, label in conditions %}
+
+                            <option value="{{ value }}"
+                                {% if request.GET.condition == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <!-- Botão filtrar -->
+                    <button type="submit" class="btn btn-outline-light"
+                            style="border-color: #8B5CF6;">
+
+                        <i class="fa-solid fa-filter me-1"></i>
+                        Filtrar
+
+                    </button>
+
+
+                    <!-- Limpar filtros -->
+                    {% if request.GET.title or request.GET.category or request.GET.brand or request.GET.condition %}
+
+                        <a href="{% url 'equipments_list' %}"
+                           class="btn btn-outline-secondary">
+
+                            <i class="fa-solid fa-xmark me-1"></i>
+                            Limpar filtros
+
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </form>
+
+
+            <!-- Tabela -->
+            <div class="table-responsive">
+
+                <table class="table table-dark table-hover align-middle mb-0">
+
+                    <thead>
+                        <tr>
+                            <th class="ps-2">Equipamento</th>
+                            <th>Marca</th>
+                            <th>Categoria</th>
+                            <th class="text-center">Quantidade</th>
+                            <th class="text-center">Condição</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for equipment in equipments %}
+
+                            <tr>
+
+                                <!-- Equipamento -->
+                                <td class="ps-2">
+
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                             style="width: 38px; height: 38px; background-color: #493568;">
+
+                                            <i class="fa-solid fa-dumbbell"
+                                               style="color: #C4B5FD;"></i>
+
+                                        </div>
+
+                                        <span class="text-white fw-semibold">
+                                            {{ equipment.title }}
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Marca -->
+                                <td class="text-white">
+
+                                    {% if equipment.brand %}
+
+                                        <span>
+                                            {{ equipment.brand.name }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="text-secondary">
+                                            Não informada
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- Categoria -->
+                                <td class="text-white">
+                                    {{ equipment.get_category_display }}
+                                </td>
+
+
+                                <!-- Quantidade -->
+                                <td class="text-center">
+
+                                    <span class="text-white fw-semibold">
+                                        {{ equipment.quantity }}
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Condição -->
+                                <td class="text-center">
+
+                                    {% if equipment.condition == 'new' %}
+
+                                        <span class="badge bg-success">
+                                            {{ equipment.get_condition_display }}
+                                        </span>
+
+                                    {% elif equipment.condition == 'excellent' %}
+
+                                        <span class="badge bg-success">
+                                            {{ equipment.get_condition_display }}
+                                        </span>
+
+                                    {% elif equipment.condition == 'good' %}
+
+                                        <span class="badge bg-info text-dark">
+                                            {{ equipment.get_condition_display }}
+                                        </span>
+
+                                    {% elif equipment.condition == 'regular' %}
+
+                                        <span class="badge bg-warning text-dark">
+                                            {{ equipment.get_condition_display }}
+                                        </span>
+
+                                    {% elif equipment.condition == 'bad' %}
+
+                                        <span class="badge bg-danger">
+                                            {{ equipment.get_condition_display }}
+                                        </span>
+
+                                    {% elif equipment.condition == 'damaged' %}
+
+                                        <span class="badge bg-danger">
+                                            {{ equipment.get_condition_display }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-secondary">
+                                            Não informada
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- Status -->
+                                <td class="text-center">
+
+                                    {% if equipment.active %}
+
+                                        <span class="badge bg-success">
+                                            Ativo
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-secondary">
+                                            Inativo
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- Ações -->
+                                <td class="text-center" style="white-space: nowrap;">
+
+                                    <div class="d-flex justify-content-center gap-2">
+
+                                        {% if perms.equipments.view_equipment %}
+                                            <a href="{% url 'equipments_detail' equipment.pk %}"
+                                            class="btn btn-sm btn-outline-info"
+                                            title="Visualizar">
+
+                                                <i class="fa-solid fa-eye"></i>
+
+                                            </a>
+                                        {% endif %}
+
+                                        {% if perms.equipments.change_equipment %}
+                                            <a href="{% url 'equipments_update' equipment.pk %}"
+                                            class="btn btn-sm btn-outline-warning"
+                                            title="Editar">
+
+                                                <i class="fa-solid fa-pen-to-square"></i>
+
+                                            </a>
+                                        {% endif %}
+
+                                           
+                                        {% if perms.equipments.delete_equipment %}
+                                            <a href="{% url 'equipments_delete' equipment.pk %}"
+                                            class="btn btn-sm btn-outline-danger"
+                                            title="Excluir">
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </a>
+                                        {% endif %}
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td colspan="7" class="text-center py-5">
+
+                                    <i class="fa-solid fa-dumbbell fa-2x text-secondary mb-3"></i>
+
+                                    <h6 class="text-white fw-semibold">
+                                        Nenhum equipamento encontrado
+                                    </h6>
+
+                                    <p class="text-secondary mb-3">
+
+                                        {% if request.GET.title or request.GET.category or request.GET.brand or request.GET.condition %}
+
+                                            Não encontramos equipamentos com os filtros selecionados.
+
+                                        {% else %}
+
+                                            Ainda não existem equipamentos cadastrados.
+
+                                        {% endif %}
+
+                                    </p>
+
+
+                                    {% if not request.GET.title and not request.GET.category and not request.GET.brand and not request.GET.condition %}
+
+                                        {% if perms.equipments.add_equipment %}
+                                            <a href="{% url 'equipments_create' %}"
+                                            class="btn btn-purple btn-sm">
+
+                                                <i class="fa-solid fa-plus me-1"></i>
+                                                Cadastrar primeiro equipamento
+
+                                            </a>
+                                        {% endif %}
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- Paginação -->
+            {% include "components/_pagination.html" %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

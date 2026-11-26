@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Novo Exercício | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1 text-light">
+                <i class="fa-solid fa-dumbbell me-2"
+                   style="color: #C4B5FD;"></i>
+                Novo Exercício
+            </h3>
+
+            <p class="text-light mb-0">
+                Cadastre exercícios para utilizar nas fichas de treino.
+            </p>
+        </div>
+    </div>
+
+    <!-- Card principal -->
+    <div class="card bg-dark border-secondary shadow-sm">
+        <div class="card-body p-4">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Erros gerais -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="row g-3">
+
+                    <!-- Nome -->
+                    <div class="col-12">
+                        <label for="{{ form.name.id_for_label }}"
+                               class="form-label text-light">
+                            {{ form.name.label }}
+                        </label>
+
+                        {{ form.name }}
+
+                        {% if form.name.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.name.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Categoria -->
+                    <div class="col-md-6">
+                        <label for="{{ form.category.id_for_label }}"
+                               class="form-label text-light">
+                            {{ form.category.label }}
+                        </label>
+
+                        {{ form.category }}
+
+                        {% if form.category.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.category.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Músculo principal -->
+                    <div class="col-md-6">
+                        <label for="{{ form.muscle_group.id_for_label }}"
+                               class="form-label text-light">
+                            {{ form.muscle_group.label }}
+                        </label>
+
+                        {{ form.muscle_group }}
+
+                        {% if form.muscle_group.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.muscle_group.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Equipamento -->
+                    <div class="col-12">
+                        <label for="{{ form.equipament.id_for_label }}"
+                               class="form-label text-light">
+                            {{ form.equipament.label }}
+                        </label>
+
+                        {{ form.equipament }}
+
+                        {% if form.equipament.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ form.equipament.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <!-- Ações -->
+                <div class="d-flex flex-wrap justify-content-end gap-2 mt-4 pt-3">
+
+                    <a href="{% url 'exercises_list' %}"
+                       class="btn btn-outline-light">
+                        <i class="fa-solid fa-arrow-left me-1"></i>
+                        Voltar
+                    </a>
+
+                    <button type="submit" class="btn btn-purple">
+                        <i class="fa-solid fa-floppy-disk me-1"></i>
+                        Cadastrar exercício
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

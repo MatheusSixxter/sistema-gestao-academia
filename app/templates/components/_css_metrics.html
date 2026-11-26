@@ -1,0 +1,481 @@
+<style>
+    /* =====================================================
+       IDENTIDADE VISUAL
+    ===================================================== */
+
+    .dashboard-page {
+        --purple: #A78BFA;
+        --purple-light: #D8B4FE;
+        --purple-border: #68449A;
+        --muted: #C4B5FD;
+    }
+
+    /* =====================================================
+       BANNER PRINCIPAL
+    ===================================================== */
+
+    .dashboard-hero {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        min-height: 205px;
+        padding: 35px 40px;
+        border: 1px solid var(--purple-border);
+        border-radius: 18px;
+
+        background:
+            radial-gradient(
+                ellipse at 85% 25%,
+                rgba(147, 51, 234, .42),
+                transparent 38%
+            ),
+            radial-gradient(
+                ellipse at 15% 100%,
+                rgba(111, 66, 193, .35),
+                transparent 45%
+            ),
+            linear-gradient(
+                120deg,
+                #29163D 0%,
+                #35204F 48%,
+                #211A2B 100%
+            );
+
+        box-shadow:
+            0 8px 30px rgba(0, 0, 0, .25),
+            inset 0 1px 0 rgba(196, 181, 253, .12);
+    }
+
+    .dashboard-hero::after {
+        content: "";
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        right: -75px;
+        bottom: -180px;
+        border: 1px solid rgba(196, 181, 253, .2);
+        border-radius: 50%;
+        box-shadow:
+            0 0 0 25px rgba(196, 181, 253, .035),
+            0 0 0 55px rgba(196, 181, 253, .025);
+        pointer-events: none;
+    }
+
+    .dashboard-hero-icon {
+        position: relative;
+        z-index: 1;
+        flex-shrink: 0;
+        width: 88px;
+        height: 88px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(196, 181, 253, .45);
+        border-radius: 22px;
+        background: linear-gradient(145deg, #7040B5, #493078);
+        color: #E0C9FF;
+        font-size: 2.5rem;
+        box-shadow:
+            0 0 20px rgba(147, 51, 234, .35),
+            inset 0 1px 8px rgba(255, 255, 255, .12);
+    }
+
+    .dashboard-hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .dashboard-eyebrow {
+        color: #D8B4FE;
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .dashboard-title {
+        color: #FFFFFF;
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+        font-weight: 800;
+        letter-spacing: -.7px;
+        margin-bottom: 8px;
+        text-shadow: 0 2px 15px rgba(167, 139, 250, .18);
+    }
+
+    .dashboard-subtitle {
+        color: #E0D2F5;
+        font-size: .95rem;
+        margin-bottom: 0;
+    }
+
+    .dashboard-hero-label {
+        position: relative;
+        z-index: 1;
+        margin-left: auto;
+        align-self: flex-start;
+        padding: 8px 13px;
+        border: 1px solid rgba(196, 181, 253, .35);
+        border-radius: 30px;
+        background: rgba(147, 51, 234, .22);
+        color: #E9D5FF;
+        font-size: .75rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       CABEÇALHOS DAS SEÇÕES
+    ===================================================== */
+
+    .dashboard-section {
+        margin-top: 34px;
+    }
+
+    .dashboard-section-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 17px;
+    }
+
+    .dashboard-section-icon {
+        flex-shrink: 0;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(167, 139, 250, .28);
+        border-radius: 13px;
+        background: linear-gradient(
+            145deg,
+            rgba(147, 51, 234, .32),
+            rgba(111, 66, 193, .12)
+        );
+        color: #D8B4FE;
+        font-size: 1.35rem;
+        box-shadow: 0 0 15px rgba(147, 51, 234, .12);
+    }
+
+    .dashboard-section-title {
+        color: #FFFFFF;
+        font-size: 1.12rem;
+        font-weight: 750;
+        margin-bottom: 3px;
+    }
+
+    .dashboard-section-description {
+        color: var(--muted);
+        font-size: .82rem;
+        margin-bottom: 0;
+    }
+
+    .dashboard-section-line {
+        flex: 1;
+        height: 1px;
+        margin-left: 8px;
+        background: linear-gradient(
+            90deg,
+            #7040B5,
+            #493568,
+            rgba(73, 53, 104, .05)
+        );
+    }
+
+    /* =====================================================
+       CONTAINER DAS MÉTRICAS
+    ===================================================== */
+
+    .dashboard-metrics-container {
+        padding: 13px;
+        border: 1px solid #594078;
+        border-radius: 15px;
+
+        background:
+            radial-gradient(
+                ellipse at top left,
+                rgba(111, 66, 193, .13),
+                transparent 55%
+            ),
+            #1C1726;
+
+        box-shadow:
+            0 5px 20px rgba(0, 0, 0, .16),
+            inset 0 1px 0 rgba(196, 181, 253, .06);
+    }
+
+    /* =====================================================
+       CARDS
+    ===================================================== */
+
+    .metric-card {
+        position: relative;
+        height: 100%;
+        min-height: 138px;
+        overflow: hidden;
+
+        border: 1px solid rgba(139, 92, 246, .42);
+        border-radius: 13px;
+
+        background: linear-gradient(
+            145deg,
+            #38274C,
+            #292039
+        );
+
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+
+        transition:
+            transform .25s ease,
+            border-color .25s ease,
+            box-shadow .25s ease;
+    }
+
+    .metric-card .card-body {
+        padding: 15px 17px;
+    }
+
+    .metric-card:hover {
+        transform: translateY(-4px);
+        border-color: #A78BFA;
+
+        box-shadow:
+            0 8px 25px rgba(111, 66, 193, .22),
+            0 0 12px rgba(167, 139, 250, .10);
+    }
+
+    .metric-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    /* =====================================================
+       ÍCONES COLORIDOS
+    ===================================================== */
+
+    .metric-icon {
+        width: 43px;
+        height: 43px;
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid rgba(196, 181, 253, .35);
+        border-radius: 50%;
+
+        background: linear-gradient(
+            145deg,
+            #7040B5,
+            #493078
+        );
+
+        color: #E9D5FF;
+        font-size: 1.15rem;
+
+        box-shadow:
+            0 0 15px rgba(147, 51, 234, .24),
+            inset 0 1px 5px rgba(255, 255, 255, .12);
+    }
+
+    .metric-icon-blue {
+        background: linear-gradient(145deg, #355FB5, #263B78);
+        border-color: rgba(125, 170, 255, .45);
+        color: #C5D8FF;
+        box-shadow: 0 0 16px rgba(74, 119, 210, .28);
+    }
+
+    .metric-icon-pink {
+        background: linear-gradient(145deg, #A83E9E, #672D79);
+        border-color: rgba(244, 114, 182, .42);
+        color: #FFD0F2;
+        box-shadow: 0 0 16px rgba(217, 70, 190, .25);
+    }
+
+    .metric-icon-green {
+        background: linear-gradient(145deg, #278B71, #205B56);
+        border-color: rgba(110, 231, 183, .38);
+        color: #B7F7D7;
+        box-shadow: 0 0 16px rgba(52, 211, 153, .22);
+    }
+
+    /* =====================================================
+       TEXTOS DOS CARDS
+    ===================================================== */
+
+    .metric-category {
+        color: #D8B4FE;
+        font-size: .64rem;
+        font-weight: 700;
+        letter-spacing: 1.1px;
+        text-transform: uppercase;
+    }
+
+    .metric-label {
+        color: #E5D8F5;
+        font-size: .82rem;
+        font-weight: 600;
+        margin: 11px 0 4px;
+    }
+
+    .metric-value {
+        color: #FFFFFF;
+        font-size: 1.85rem;
+        font-weight: 800;
+        letter-spacing: -.8px;
+        line-height: 1.1;
+        margin: 0;
+        font-variant-numeric: tabular-nums;
+        text-shadow: 0 2px 12px rgba(196, 181, 253, .15);
+    }
+
+    /* =====================================================
+       BARRAS COLORIDAS
+    ===================================================== */
+
+    .metric-accent {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+
+        background: linear-gradient(
+            90deg,
+            #7C3AED,
+            #C084FC,
+            #E9D5FF,
+            transparent
+        );
+
+        box-shadow: 0 0 9px rgba(167, 139, 250, .45);
+    }
+
+    .metric-accent-blue {
+        background: linear-gradient(
+            90deg,
+            #2563EB,
+            #60A5FA,
+            #BFDBFE,
+            transparent
+        );
+        box-shadow: 0 0 9px rgba(96, 165, 250, .35);
+    }
+
+    .metric-accent-pink {
+        background: linear-gradient(
+            90deg,
+            #C026D3,
+            #E879F9,
+            #FBCFE8,
+            transparent
+        );
+        box-shadow: 0 0 9px rgba(232, 121, 249, .35);
+    }
+
+    .metric-accent-green {
+        background: linear-gradient(
+            90deg,
+            #059669,
+            #34D399,
+            #A7F3D0,
+            transparent
+        );
+        box-shadow: 0 0 9px rgba(52, 211, 153, .35);
+    }
+
+    /* =====================================================
+       RESPONSIVIDADE
+    ===================================================== */
+
+    @media (max-width: 991.98px) {
+        .dashboard-hero {
+            padding: 28px;
+        }
+
+        .dashboard-hero-label {
+            display: none;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+
+        .dashboard-hero {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 18px;
+            min-height: auto;
+            padding: 25px 20px;
+        }
+
+        .dashboard-hero-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 16px;
+            font-size: 1.8rem;
+        }
+
+        .dashboard-title {
+            font-size: 1.45rem;
+            line-height: 1.3;
+        }
+
+        .dashboard-subtitle {
+            font-size: .85rem;
+        }
+
+        .dashboard-section {
+            margin-top: 27px;
+        }
+
+        .dashboard-section-icon {
+            width: 39px;
+            height: 39px;
+            font-size: 1.15rem;
+        }
+
+        .dashboard-section-title {
+            font-size: 1rem;
+        }
+
+        .dashboard-section-description {
+            font-size: .75rem;
+        }
+
+        .dashboard-section-line {
+            display: none;
+        }
+
+        .dashboard-metrics-container {
+            padding: 9px;
+        }
+
+        .metric-card {
+            min-height: 130px;
+        }
+
+        .metric-card .card-body {
+            padding: 14px;
+        }
+
+        .metric-value {
+            font-size: 1.7rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .metric-card {
+            transition: none;
+        }
+
+        .metric-card:hover {
+            transform: none;
+        }
+    }
+</style>

@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Marca | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+
+        <h2 class="text-white fw-bold mb-1">
+            <i class="fa-solid fa-tags me-2" style="color: #A78BFA;"></i>
+            Cadastrar Marca
+        </h2>
+
+        <p class="text-white mb-0">
+            Cadastre uma nova marca para os equipamentos da sua academia.
+        </p>
+
+    </div>
+
+
+    <!-- Card principal -->
+    <div class="card bg-dark border-secondary shadow-sm mx-auto"
+         style="max-width: 850px; background-color: #30283A !important; border-color: #493568 !important;">
+
+        <div class="card-body p-4">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <!-- Nome -->
+                <div class="mb-4">
+
+                    <label for="{{ form.name.id_for_label }}"
+                           class="form-label text-white fw-semibold">
+
+                        Nome da marca
+                        <span class="text-danger">*</span>
+
+                    </label>
+
+                    {{ form.name }}
+
+                    {% if form.name.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.name.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Descrição -->
+                <div class="mb-4">
+
+                    <label for="{{ form.description.id_for_label }}"
+                           class="form-label text-white fw-semibold">
+
+                        Descrição
+
+                    </label>
+
+                    {{ form.description }}
+
+                    {% if form.description.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.description.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Erros gerais -->
+                {% if form.non_field_errors %}
+
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+
+                {% endif %}
+
+
+                <!-- Botões -->
+                <div class="d-flex justify-content-end gap-2 pt-3 border-top border-secondary">
+
+                    <a href="{% url 'brands_list' %}"
+                       class="btn btn-outline-secondary">
+
+                        <i class="fa-solid fa-arrow-left me-1"></i>
+                        Voltar
+
+                    </a>
+
+                    <button type="submit" class="btn btn-purple">
+
+                        <i class="fa-solid fa-floppy-disk me-1"></i>
+                        Salvar marca
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

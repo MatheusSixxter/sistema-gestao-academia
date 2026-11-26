@@ -1,0 +1,55 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="card border-0 shadow-lg"
+                 style="background-color: var(--card-bg);">
+
+                <div class="card-body p-4 p-md-5 text-center">
+
+                    <div class="mb-3">
+                        <i class="bi bi-exclamation-triangle text-warning"
+                           style="font-size: 3rem;"></i>
+                    </div>
+
+                    <h2 class="text-white fw-bold mb-3">
+                        Excluir ficha de treino?
+                    </h2>
+
+                    <p class="text-secondary mb-2">
+                        Você está prestes a excluir a ficha:
+                    </p>
+
+                    <h5 class="text-white mb-3">{{ object.name }}</h5>
+
+                    <p class="text-secondary">
+                        Essa ação pode ser irreversível. Confirme apenas se
+                        realmente deseja excluir esta ficha.
+                    </p>
+
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+
+                        <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-2"></i>Sim, excluir
+                            </button>
+
+                            <a href="{% url 'workoutplans_detail' object.pk %}"
+                               class="btn btn-outline-light">
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,287 @@
+
+{% extends "base.html" %}
+
+{% block title %}Detalhes do equipamento | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+
+        <h2 class="text-white fw-bold mb-1">
+            <i class="fa-solid fa-dumbbell me-2" style="color: #A78BFA;"></i>
+            Detalhes do equipamento
+        </h2>
+
+        <p class="text-white mb-0">
+            Consulte as informações e acompanhe os dados deste equipamento.
+        </p>
+
+    </div>
+
+
+    <!-- Card principal -->
+    <div class="card shadow-sm"
+         style="background-color: #30283A; border: 1px solid #493568;">
+
+        <div class="card-body p-4">
+
+            <!-- Identificação -->
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                         style="width: 64px; height: 64px; background-color: #493568;">
+
+                        <i class="fa-solid fa-dumbbell fa-xl"
+                           style="color: #C4B5FD;"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4 class="text-white fw-bold mb-1">
+                            {{ equipment.title }}
+                        </h4>
+
+                        <span class="text-white-50">
+                            {{ equipment.brand.name|default:"Marca não informada" }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    {% if equipment.active %}
+                        <span class="badge bg-success fs-6">Ativo</span>
+                    {% else %}
+                        <span class="badge bg-secondary fs-6">Inativo</span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <hr style="border-color: #493568;">
+
+
+            <!-- Informações -->
+            <h5 class="text-white fw-bold mb-3">
+                <i class="fa-solid fa-circle-info me-2"
+                   style="color: #A78BFA;"></i>
+                Informações gerais
+            </h5>
+
+            <div class="row g-3 mb-4">
+
+                <div class="col-md-6">
+
+                    <div class="p-3 rounded h-100"
+                         style="background-color: #211A2B; border: 1px solid #493568;">
+
+                        <small class="text-white-50 d-block mb-1">Nome do equipamento</small>
+                        <span class="text-white fw-semibold">{{ equipment.title }}</span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="p-3 rounded h-100"
+                         style="background-color: #211A2B; border: 1px solid #493568;">
+
+                        <small class="text-white-50 d-block mb-1">Marca</small>
+                        <span class="text-white fw-semibold">
+                            {{ equipment.brand.name|default:"Não informada" }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="p-3 rounded h-100"
+                         style="background-color: #211A2B; border: 1px solid #493568;">
+
+                        <small class="text-white-50 d-block mb-1">Categoria</small>
+                        <span class="text-white fw-semibold">
+                            {{ equipment.get_category_display }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="p-3 rounded h-100"
+                         style="background-color: #211A2B; border: 1px solid #493568;">
+
+                        <small class="text-white-50 d-block mb-1">Quantidade</small>
+                        <span class="text-white fw-semibold">
+                            {{ equipment.quantity }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="p-3 rounded h-100"
+                         style="background-color: #211A2B; border: 1px solid #493568;">
+
+                        <small class="text-white-50 d-block mb-1">Condição</small>
+
+                        {% if equipment.condition == 'new' or equipment.condition == 'excellent' %}
+                            <span class="badge bg-success">
+                                {{ equipment.get_condition_display }}
+                            </span>
+                        {% elif equipment.condition == 'good' %}
+                            <span class="badge bg-info text-dark">
+                                {{ equipment.get_condition_display }}
+                            </span>
+                        {% elif equipment.condition == 'regular' %}
+                            <span class="badge bg-warning text-dark">
+                                {{ equipment.get_condition_display }}
+                            </span>
+                        {% elif equipment.condition == 'bad' or equipment.condition == 'damaged' %}
+                            <span class="badge bg-danger">
+                                {{ equipment.get_condition_display }}
+                            </span>
+                        {% else %}
+                            <span class="badge bg-secondary">Não informada</span>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="p-3 rounded h-100"
+                         style="background-color: #211A2B; border: 1px solid #493568;">
+
+                        <small class="text-white-50 d-block mb-1">Data de cadastro</small>
+                        <span class="text-white fw-semibold">
+                            {{ equipment.created_at|date:"d/m/Y H:i" }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Descrição -->
+            <h5 class="text-white fw-bold mb-3">
+                <i class="fa-solid fa-align-left me-2"
+                   style="color: #A78BFA;"></i>
+                Descrição
+            </h5>
+
+            <div class="p-3 rounded mb-4"
+                 style="background-color: #211A2B; border: 1px solid #493568;">
+
+                {% if equipment.description %}
+
+                    <p class="text-white mb-0" style="white-space: pre-line;">
+                        {{ equipment.description }}
+                    </p>
+
+                {% else %}
+
+                    <span class="text-white-50">
+                        Nenhuma descrição informada.
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Exercícios vinculados -->
+            <h5 class="text-white fw-bold mb-3">
+                <i class="fa-solid fa-dumbbell me-2"
+                   style="color: #A78BFA;"></i>
+                Exercícios vinculados
+            </h5>
+
+            <div class="p-3 rounded mb-4"
+                 style="background-color: #211A2B; border: 1px solid #493568;">
+
+                {% with linked_exercises=equipment.exercises.all %}
+
+                    {% if linked_exercises %}
+
+                        <div class="d-flex flex-wrap gap-2">
+
+                            {% for exercise in linked_exercises %}
+
+                                <span class="badge rounded-pill"
+                                      style="background-color: #493568; color: #E9D5FF;">
+
+                                    {{ exercise.name }}
+
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <span class="text-white-50">
+                            Nenhum exercício está vinculado a este equipamento.
+                        </span>
+
+                    {% endif %}
+
+                {% endwith %}
+
+            </div>
+
+
+            <!-- Botões -->
+            <div class="d-flex flex-wrap justify-content-end gap-2">
+
+                <a href="{% url 'equipments_list' %}"
+                   class="btn btn-outline-secondary">
+
+                    <i class="fa-solid fa-arrow-left me-1"></i>
+                    Voltar
+
+                </a>
+
+                <a href="{% url 'equipments_update' equipment.pk %}"
+                   class="btn btn-purple">
+
+                    <i class="fa-solid fa-pen-to-square me-1"></i>
+                    Editar equipamento
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,175 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Editar Atleta | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-3">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+        <h3 class="fw-bold text-light mb-1">
+            <i class="fa-solid fa-user-pen me-2" style="color: #C4B5FD;"></i>
+            Editar atleta
+        </h3>
+
+        <p class="text-light mb-0">
+            Atualize as informações cadastrais do atleta.
+        </p>
+    </div>
+
+    <!-- Formulário -->
+    <div class="card bg-dark border-secondary shadow-sm">
+        <div class="card-body p-4">
+
+            <!-- Identificação do atleta -->
+            <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom border-secondary">
+                <div class="rounded-circle bg-secondary text-light d-flex justify-content-center align-items-center"
+                     style="width: 52px; height: 52px; flex-shrink: 0;">
+                    <i class="fa-solid fa-user fs-4"></i>
+                </div>
+
+                <div>
+                    <h5 class="text-light fw-semibold mb-1">
+                        {{ athlete.name }}
+                    </h5>
+                    <small class="text-secondary">
+                        Edite os campos abaixo e salve as alterações.
+                    </small>
+                </div>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="row g-3">
+
+                    <!-- Nome -->
+                    <div class="col-12">
+                        <label for="{{ form.name.id_for_label }}"
+                               class="form-label text-light">
+                            Nome completo
+                        </label>
+
+                        {{ form.name }}
+
+                        {% for error in form.name.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- CPF -->
+                    <div class="col-md-6">
+                        <label for="{{ form.cpf.id_for_label }}"
+                               class="form-label text-light">
+                            CPF
+                        </label>
+
+                        {{ form.cpf }}
+
+                        {% for error in form.cpf.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Telefone -->
+                    <div class="col-md-6">
+                        <label for="{{ form.phone.id_for_label }}"
+                               class="form-label text-light">
+                            Telefone
+                        </label>
+
+                        {{ form.phone }}
+
+                        {% for error in form.phone.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- E-mail -->
+                    <div class="col-md-6">
+                        <label for="{{ form.email.id_for_label }}"
+                               class="form-label text-light">
+                            E-mail
+                        </label>
+
+                        {{ form.email }}
+
+                        {% for error in form.email.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Plano -->
+                    <div class="col-md-6">
+                        <label for="{{ form.plan.id_for_label }}"
+                               class="form-label text-light">
+                            Plano
+                        </label>
+
+                        {{ form.plan }}
+
+                        {% for error in form.plan.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+                        <label for="{{ form.status.id_for_label }}"
+                               class="form-label text-light">
+                            Status
+                        </label>
+
+                        {{ form.status }}
+
+                        {% for error in form.status.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <!-- Botões -->
+                <div class="d-flex flex-wrap gap-2 mt-4 pt-3 border-top border-secondary">
+
+                    <button type="submit" class="btn btn-purple">
+                        <i class="fa-solid fa-floppy-disk me-1"></i>
+                        Salvar alterações
+                    </button>
+
+                    <a href="{% url 'athletes_detail' athlete.pk %}"
+                       class="btn btn-outline-light">
+                        <i class="fa-solid fa-arrow-left me-1"></i>
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

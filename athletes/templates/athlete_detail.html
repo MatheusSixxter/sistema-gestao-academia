@@ -1,0 +1,176 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Atleta | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-3">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h3 class="fw-bold text-light mb-1">
+                <i class="fa-solid fa-id-card me-2"></i>
+                Detalhes do atleta
+            </h3>
+            <p class="text-light mb-0">
+                Visualize as informações do atleta cadastrado.
+            </p>
+        </div>
+
+        <a href="{% url 'athletes_list' %}" class="btn btn-outline-light">
+            <i class="fa-solid fa-arrow-left me-1"></i>
+            Voltar para atletas
+        </a>
+    </div>
+
+    <!-- Perfil do atleta -->
+    <div class="card bg-dark border-secondary shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex flex-wrap align-items-center gap-3">
+
+                <div class="rounded-circle d-flex justify-content-center align-items-center
+                            bg-secondary-subtle text-light"
+                     style="width: 72px; height: 72px; flex-shrink: 0;">
+                    <i class="fa-solid fa-user fs-2"></i>
+                </div>
+
+                <div class="flex-grow-1">
+                    <h4 class="fw-bold text-light mb-1">
+                        {{ athlete.name }}
+                    </h4>
+
+                    <p class="text-secondary mb-2">
+                        <i class="fa-solid fa-fingerprint me-1"></i>
+                        CPF: {{ athlete.cpf|default:"Não informado" }}
+                    </p>
+
+                    {% if athlete.status == 'active' %}
+                        <span class="badge text-bg-success">
+                            <i class="fa-solid fa-circle-check me-1"></i>
+                            Ativo
+                        </span>
+                    {% elif athlete.status == 'inactive' %}
+                        <span class="badge text-bg-danger">
+                            <i class="fa-solid fa-circle-xmark me-1"></i>
+                            Inativo
+                        </span>
+                    {% else %}
+                        <span class="badge text-bg-secondary">
+                            {{ athlete.get_status_display }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <a href="{% url 'athletes_update' athlete.pk %}"
+                       class="btn btn-purple">
+                        <i class="fa-solid fa-pen-to-square me-1"></i>
+                        Editar atleta
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Informações -->
+    <div class="card bg-dark border-secondary shadow-sm">
+        <div class="card-header border-secondary py-3">
+            <h5 class="text-light fw-semibold mb-0">
+                <i class="fa-solid fa-address-card me-2"></i>
+                Informações cadastrais
+            </h5>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="row g-4">
+
+                <!-- Nome -->
+                <div class="col-md-6">
+                    <small class="text-secondary d-block mb-1">
+                        Nome completo
+                    </small>
+                    <p class="text-light fw-semibold mb-0">
+                        {{ athlete.name|default:"Não informado" }}
+                    </p>
+                </div>
+
+                <!-- CPF -->
+                <div class="col-md-6">
+                    <small class="text-secondary d-block mb-1">
+                        CPF
+                    </small>
+                    <p class="text-light fw-semibold mb-0">
+                        {{ athlete.cpf|default:"Não informado" }}
+                    </p>
+                </div>
+
+                <!-- Telefone -->
+                <div class="col-md-6">
+                    <small class="text-secondary d-block mb-1">
+                        Telefone
+                    </small>
+                    <p class="text-light fw-semibold mb-0">
+                        <i class="fa-solid fa-phone me-1"></i>
+                        {{ athlete.phone|default:"Não informado" }}
+                    </p>
+                </div>
+
+                <!-- E-mail -->
+                <div class="col-md-6">
+                    <small class="text-secondary d-block mb-1">
+                        E-mail
+                    </small>
+                    <p class="text-light fw-semibold mb-0">
+                        <i class="fa-solid fa-envelope me-1"></i>
+                        {{ athlete.email|default:"Não informado" }}
+                    </p>
+                </div>
+
+                <!-- Plano -->
+                <div class="col-md-6">
+                    <small class="text-secondary d-block mb-1">
+                        Plano contratado
+                    </small>
+                    <p class="text-light fw-semibold mb-0">
+                        <i class="fa-solid fa-id-badge me-1"></i>
+                        {{ athlete.get_plan_display|default:"Não informado" }}
+                    </p>
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-6">
+                    <small class="text-secondary d-block mb-1">
+                        Status da matrícula
+                    </small>
+                    <p class="text-light fw-semibold mb-0">
+                        {{ athlete.get_status_display|default:"Não informado" }}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Ações -->
+    <div class="d-flex flex-wrap gap-2 mt-4">
+
+        <a href="{% url 'athletes_update' athlete.pk %}"
+           class="btn btn-purple">
+            <i class="fa-solid fa-pen-to-square me-1"></i>
+            Editar atleta
+        </a>
+
+        <a href="{% url 'athletes_delete' athlete.pk %}"
+           class="btn btn-outline-danger">
+            <i class="fa-solid fa-trash me-1"></i>
+            Excluir atleta
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

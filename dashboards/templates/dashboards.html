@@ -1,0 +1,361 @@
+{% extends 'base.html' %}
+
+{% block title %}SGA - Dashboards{% endblock %}
+
+{% block content %}
+
+{% include "components/_css_metrics.html" %}
+
+<div class="dashboard-page">
+
+    <div class="container-fluid px-0 pb-4">
+
+        <!-- CABEÇALHO PRINCIPAL -->
+        <header class="dashboard-hero mb-4">
+
+            <div class="dashboard-hero-icon">
+                <i class="fa-solid fa-dumbbell"></i>
+            </div>
+
+            <div class="dashboard-hero-content">
+                <p class="dashboard-eyebrow">
+                    Painel de controle
+                </p>
+
+                <h1 class="dashboard-title">
+                    Sistema de Academia
+                </h1>
+
+                <p class="dashboard-subtitle">
+                    Dashboards e indicadores gerais de desempenho
+                </p>
+            </div>
+
+            <div class="dashboard-hero-label">
+                <i class="fa-solid fa-chart-line me-1"></i>
+                VISÃO GERAL
+            </div>
+
+        </header>
+
+
+        <!-- MÉTRICAS DE ATLETAS -->
+        {% if perms.athletes.view_athlete %}
+
+            <section class="dashboard-section">
+
+                <div class="dashboard-section-header">
+
+                    <div class="dashboard-section-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div>
+                        <h2 class="dashboard-section-title">
+                            Métricas de atletas
+                        </h2>
+
+                        <p class="dashboard-section-description">
+                            Informações sobre cadastro e situação dos alunos
+                        </p>
+                    </div>
+
+                    <div class="dashboard-section-line"></div>
+
+                </div>
+
+                <div class="dashboard-metrics-container">
+                    {% include "components/_athletes_metrics.html" %}
+                </div>
+
+            </section>
+
+        {% endif %}
+
+
+        <!-- MÉTRICAS DO SISTEMA -->
+        {% if perms.workouts.view_workoutplan or perms.exercises.view_exercise or perms.equipments.view_equipment %}
+
+            <section class="dashboard-section">
+
+                <div class="dashboard-section-header">
+
+                    <div class="dashboard-section-icon">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+
+                    <div>
+                        <h2 class="dashboard-section-title">
+                            Métricas do sistema
+                        </h2>
+
+                        <p class="dashboard-section-description">
+                            Indicadores gerais de treinos, exercícios e estrutura
+                        </p>
+                    </div>
+
+                    <div class="dashboard-section-line"></div>
+
+                </div>
+
+                <div class="dashboard-metrics-container">
+                    {% include "components/_gym_metrics.html" %}
+                </div>
+
+            </section>
+
+        {% endif %}
+
+
+        <!-- GRÁFICOS DO SISTEMA -->
+        {% if perms.athletes.view_athlete or perms.equipments.view_equipment %}
+
+            <section class="dashboard-section mt-5 pt-3">
+
+                <div class="dashboard-section-header">
+
+                    <div class="dashboard-section-icon">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+
+                    <div>
+                        <h2 class="dashboard-section-title">
+                            Análise gráfica
+                        </h2>
+
+                        <p class="dashboard-section-description">
+                            Visualização de cadastros e equipamentos
+                        </p>
+                    </div>
+
+                    <div class="dashboard-section-line"></div>
+
+                </div>
+
+
+                <div class="row g-4">
+
+                    <!-- GRÁFICO DE ATLETAS -->
+                    {% if perms.athletes.view_athlete %}
+
+                        <div class="col-12 col-xl-6">
+
+                            <div class="card h-100 shadow-sm"
+                                 style="background-color: #30283A; border: 1px solid #493568;">
+
+                                <div class="card-body">
+
+                                    <h5 class="text-center mb-4" style="color: #C4B5FD;">
+                                        <i class="fa-solid fa-users me-2"></i>
+                                        Cadastros de Atletas por Mês
+                                    </h5>
+
+                                    <div style="position: relative; height: 300px;">
+                                        <canvas id="athletesChart"></canvas>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- GRÁFICO DE EQUIPAMENTOS -->
+                    {% if perms.equipments.view_equipment %}
+
+                        <div class="col-12 col-xl-6">
+
+                            <div class="card h-100 shadow-sm"
+                                 style="background-color: #30283A; border: 1px solid #493568;">
+
+                                <div class="card-body">
+
+                                    <h5 class="text-center mb-4" style="color: #C4B5FD;">
+                                        <i class="fa-solid fa-dumbbell me-2"></i>
+                                        Equipamentos por Categoria
+                                    </h5>
+
+                                    <div style="position: relative; height: 300px;">
+                                        <canvas id="equipmentsChart"></canvas>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // DADOS DOS GRÁFICOS
+    var athletesData = JSON.parse('{{ athletes_chart_data|default:"{}"|escapejs }}');
+    var equipmentsData = JSON.parse('{{ equipments_chart_data|default:"{}"|escapejs }}');
+
+
+    // GRÁFICO DE ATLETAS
+    var athletesCanvas = document.getElementById('athletesChart');
+
+    if (athletesCanvas) {
+
+        var ctxAthletes = athletesCanvas.getContext('2d');
+
+        new Chart(ctxAthletes, {
+
+            type: 'line',
+
+            data: {
+                labels: athletesData.months || [],
+
+                datasets: [{
+                    label: 'Novos atletas',
+                    data: athletesData.values || [],
+                    fill: true,
+                    backgroundColor: 'rgba(167, 139, 250, 0.15)',
+                    borderColor: '#A78BFA',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#C4B5FD',
+                    pointBorderColor: '#A78BFA',
+                    pointRadius: 5,
+                    tension: 0.4
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#E9D5FF'
+                        }
+                    }
+                },
+
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#DDD6FE'
+                        },
+                        grid: {
+                            color: 'rgba(196, 181, 253, 0.15)'
+                        }
+                    },
+
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0,
+                            color: '#DDD6FE'
+                        },
+
+                        grid: {
+                            color: 'rgba(196, 181, 253, 0.18)'
+                        }
+                    }
+                }
+            }
+
+        });
+
+    }
+
+
+    // GRÁFICO DE EQUIPAMENTOS
+    var equipmentsCanvas = document.getElementById('equipmentsChart');
+
+    if (equipmentsCanvas) {
+
+        var ctxEquipments = equipmentsCanvas.getContext('2d');
+
+        new Chart(ctxEquipments, {
+
+            type: 'bar',
+
+            data: {
+                labels: equipmentsData.categories || [],
+
+                datasets: [{
+                    label: 'Quantidade de unidades',
+                    data: equipmentsData.values || [],
+
+                    backgroundColor: [
+                        '#A78BFA',
+                        '#60A5FA',
+                        '#F472B6',
+                        '#34D399',
+                        '#FBBF24'
+                    ],
+
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#E9D5FF'
+                        }
+                    }
+                },
+
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#C4B5FD'
+                        },
+
+                        grid: {
+                            display: false
+                        }
+                    },
+
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0,
+                            color: '#C4B5FD'
+                        },
+
+                        grid: {
+                            color: 'rgba(196, 181, 253, 0.12)'
+                        }
+                    }
+                }
+            }
+
+        });
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

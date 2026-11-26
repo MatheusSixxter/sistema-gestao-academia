@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Fornecedores | Sistema de Academia{% endblock %}
+
+{% block content %}
+
+<!-- CÓDIGO INICIAL DE SUPPLIER_LIST-->
+
+<div class="container-fluid py-4">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+
+        <h3 class="text-white fw-bold mb-1">
+            <i class="fa-solid fa-truck-fast me-2" style="color: #C4B5FD;"></i>
+            Fornecedores
+        </h3>
+
+        <p class="text-light mb-0">
+            Gerencie todos os fornecedores da sua academia.
+        </p>
+
+    </div>
+
+    <!-- Card principal -->
+    <div class="card border-0 shadow-sm" style="background-color: #30283A;">
+
+        <div class="card-body">
+
+            <!-- Busca e cadastro -->
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+
+                <form method="GET" class="d-flex flex-wrap align-items-center gap-2 flex-grow-1">
+
+                    <!-- Barra de busca -->
+                    <div class="input-group flex-grow-1" style="max-width: 400px; min-width: 250px;">
+
+                        <span class="input-group-text"
+                              style="background-color: #30283A; border: 1px solid #8B5CF6;">
+                            <i class="fa-solid fa-magnifying-glass" style="color: #C4B5FD;"></i>
+                        </span>
+
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control text-light"
+                            placeholder="Buscar por nome, CNPJ ou e-mail..."
+                            value="{{ request.GET.search|default:'' }}"
+                            style="background-color: #30283A; border: 1px solid #8B5CF6;"
+                        >
+
+                    </div>
+
+                    <!-- Botão buscar -->
+                    <button type="submit"
+                            class="btn"
+                            style="background-color: #30283A; border: 1px solid #8B5CF6; color: #C4B5FD;">
+                        <i class="fa-solid fa-filter me-1"></i>
+                        Buscar
+                    </button>
+
+                </form>
+
+                <!-- Botão novo fornecedor -->
+                {% if perms.suppliers.add_supplier %}
+                    <a href="{% url 'suppliers_create' %}" class="btn btn-purple">
+                        <i class="fa-solid fa-plus me-1"></i>
+                        Novo fornecedor
+                    </a>
+                {% endif %}
+
+            </div>
+
+            <!-- Tabela -->
+            <div class="table-responsive">
+
+                <table class="table table-dark table-hover align-middle mb-0">
+
+                    <thead>
+                        <tr>
+                            <th>Fornecedor</th>
+                            <th>CNPJ</th>
+                            <th>Telefone</th>
+                            <th>E-mail</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for supplier in suppliers %}
+
+                            <tr>
+
+                                <!-- Fornecedor -->
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                             style="width: 38px; height: 38px; background-color: #493568; flex-shrink: 0;">
+                                            <i class="fa-solid fa-truck-fast" style="color: #C4B5FD;"></i>
+                                        </div>
+
+                                        <span class="fw-semibold">
+                                            {{ supplier.name }}
+                                        </span>
+
+                                    </div>
+                                </td>
+
+                                <!-- CNPJ -->
+                                <td>{{ supplier.cnpj }}</td>
+
+                                <!-- Telefone -->
+                                <td>{{ supplier.phone }}</td>
+
+                                <!-- E-mail -->
+                                <td>{{ supplier.email }}</td>
+
+                                <!-- Ações -->
+                                <td class="text-center">
+
+                                    <div class="d-flex justify-content-center gap-1">
+
+                                        {% if perms.suppliers.view_supplier %}
+                                            <a href="{% url 'suppliers_detail' supplier.pk %}"
+                                            class="btn btn-sm btn-outline-info"
+                                            title="Visualizar">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </a>
+                                        {% endif %}
+
+
+                                        {% if perms.suppliers.change_supplier %}
+                                            <a href="{% url 'suppliers_update' supplier.pk %}"
+                                            class="btn btn-sm btn-outline-warning"
+                                            title="Editar">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                        {% endif %}
+
+
+                                        {% if perms.suppliers.delete_supplier %}
+                                            <a href="{% url 'suppliers_delete' supplier.pk %}"
+                                            class="btn btn-sm btn-outline-danger"
+                                            title="Excluir">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        {% endif %}
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+
+                                    <i class="fa-solid fa-truck-fast fa-2x mb-3"
+                                       style="color: #A78BFA;"></i>
+
+                                    <p class="text-light mb-1 fw-semibold">
+                                        Nenhum fornecedor encontrado.
+                                    </p>
+
+                                    <p class="text-secondary mb-0">
+                                        Cadastre um fornecedor ou tente outra busca.
+                                    </p>
+
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Paginação -->
+            {% include "components/_pagination.html" %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
