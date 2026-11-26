@@ -596,7 +596,7 @@ A utilização, modificação e redistribuição do código devem respeitar os d
 
 ## 👨‍💻 Desenvolvedor
 
-**Matheus Andrade**
+**Matheus Andrade de Souza**
 
 Estudante de Análise e Desenvolvimento de Sistemas, com foco em desenvolvimento Backend utilizando Python e Django.
 
